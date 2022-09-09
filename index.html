@@ -84,10 +84,12 @@
 
     <section>
 
+        <div id="size-box"> </div> <!-- size info -->
+
         <!-- Upload Button -->
-        <button>
+        <!-- <button>
             Upload File
-        </button>
+        </button> -->
 
 
 
@@ -100,9 +102,10 @@
     <div class="divider"></div>
 
     <footer>
-        <div class="typo-title"> 
-            start
+        <div id="status" class="typo-subtitle"> 
+            Start?
         </div>
+
     </footer>
 
 
@@ -120,6 +123,8 @@
         let cropAreaBounds = null
 
         const cropArea = document.getElementById('crop-area')
+        const statusElem = document.getElementById('status')
+        const sizeElem = document.getElementById('size-box')
 
         cropArea.onmouseover = (e) => {
             document.body.style.cursor = 'crosshair';
@@ -132,11 +137,14 @@
         cropArea.onmousedown = (e) => {
             cropAreaBounds = cropArea.getBoundingClientRect()
             cropbox = [
-                e.clientX-cropAreaBounds.x, 
-                e.clientY-cropAreaBounds.y,
+                e.clientX,
+                e.clientY,
                 0,
                 0,
             ]
+
+            statusElem.textContent = 'Cropping...'
+            sizeElem.textContent = ''
         }
 
         cropArea.onmouseup = (e) => {
@@ -144,6 +152,8 @@
 
             cropbox = null 
             cropAreaBounds = null
+            statusElem.textContent = 'Cropped !'
+            sizeElem.textContent = ''
         }
 
         cropArea.onmousemove = (e) => {
@@ -152,6 +162,7 @@
             cropbox[2] = e.clientX - cropbox[0]
             cropbox[3] = e.clientY - cropbox[1]
             console.log({cropbox})
+            sizeElem.textContent = Math.abs(Math.round(cropbox[2])) + 'x' + Math.abs(Math.round(cropbox[3]))
         }
     </script>
 

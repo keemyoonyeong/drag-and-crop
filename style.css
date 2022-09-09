@@ -19,14 +19,32 @@ body {
 }
 
 .typo-title {
-    font-size: 70px;
+    font-size: 72px;
     font-weight: bold;
     line-height: 1.0;
     padding: 8px;
     font-family: 'Bungee Outline', cursive;
 }
 
+.typo-subtitle {
+    font-size: 56px;
+    font-weight: bold;
+    line-height: 1.0;
+    padding: 8px;
+    font-family: 'Bungee Outline', cursive;
+}
+
+#size-box {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background: #000;
+    color: white;
+    font-size: 24px;
+}
+
 section {
+    position: relative;
     font-size: 32px;
     display: flex;
     flex-direction: column;
@@ -52,6 +70,7 @@ button:hover {
 
 header, footer {
     flex: 0 0 auto;
+    position: relative;
 }
 
 section {
