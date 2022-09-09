@@ -95,7 +95,11 @@
 
         <!-- Crop Area -->
         <div id="crop-area">
-
+            <svg id="cropbox-container" >
+                <path id="cropbox-path" 
+                d="M0 0 L0 200 L200 200 L200 0 Z M10 10 L190 10 L190 190 L10 190 Z" 
+                />
+            </svg>
         </div>
     </section>
 
@@ -107,6 +111,8 @@
         </div>
 
     </footer>
+
+
 
 
     <!-- Help Message Button -->
@@ -125,6 +131,8 @@
         const cropArea = document.getElementById('crop-area')
         const statusElem = document.getElementById('status')
         const sizeElem = document.getElementById('size-box')
+        const cropBoxElem = document.getElementById('cropbox-container')
+        const cropPathElem = document.getElementById('cropbox-path')
 
         cropArea.onmouseover = (e) => {
             document.body.style.cursor = 'crosshair';
@@ -132,6 +140,21 @@
 
         cropArea.onmouseleave = (e) => {
             document.body.style.cursor = 'unset';
+        }
+
+        const updateCropBox = (cropbox) => {
+            if (!cropbox) {
+                cropBoxElem.style.visibility = 'hidden'
+                return
+            }
+            
+            cropBoxElem.style.visibility = 'visible'
+            cropPathElem.d = `
+            M0 0 L0 ${cropAreaBounds.height} L${cropAreaBounds.width} ${cropAreaBounds.height} L${cropAreaBounds.width} 0 Z 
+            
+            `
+            console.log(cropPathElem.d)
+            // M10 10 L190 10 L190 190 L10 190 Z
         }
 
         cropArea.onmousedown = (e) => {
@@ -161,9 +184,13 @@
             
             cropbox[2] = e.clientX - cropbox[0]
             cropbox[3] = e.clientY - cropbox[1]
-            console.log({cropbox})
-            sizeElem.textContent = Math.abs(Math.round(cropbox[2])) + 'x' + Math.abs(Math.round(cropbox[3]))
+            
+            sizeElem.textContent = ` ${Math.abs(Math.round(cropbox[2]))}x${Math.abs(Math.round(cropbox[3]))} `
+
+            updateCropBox(cropbox)
         }
+
+        
     </script>
 
 </body>
