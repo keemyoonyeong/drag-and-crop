@@ -93,7 +93,7 @@
 			};
 
 			cropArea.onmouseleave = (e) => {
-				document.body.style.cursor = "unset";
+				endCropBox()
 			};
 
 			const updateCropBox = (cropbox) => {
@@ -106,13 +106,19 @@
 				cropBoxElem.style.visibility = "visible";
 				cropPathElem.setAttribute(
 					"d",
-					`
-                M0 0 L0 ${cropAreaBounds.height} L${cropAreaBounds.width} ${cropAreaBounds.height} L${cropAreaBounds.width} 0 Z 
-                M${cropbox[0]} ${cropbox[1]} L${cropbox[2]} ${cropbox[1]} L${cropbox[2]} ${cropbox[3]} L${cropbox[0]} ${cropbox[3]} Z    
-            `
+					`M0 0 L0 ${cropAreaBounds.height} L${cropAreaBounds.width} ${cropAreaBounds.height} L${cropAreaBounds.width} 0 Z 
+                    M${cropbox[0]} ${cropbox[1]} L${cropbox[2]} ${cropbox[1]} L${cropbox[2]} ${cropbox[3]} L${cropbox[0]} ${cropbox[3]} Z`
 				);
 			};
 
+            const endCropBox = () => {
+                cropbox = null;
+				cropAreaBounds = null;
+				statusElem.textContent = "Cropped !";
+				sizeElem.textContent = "";
+				document.body.style.cursor = "unset";
+            }
+            
 			cropArea.onmousedown = (e) => {
 				cropAreaBounds = cropArea.getBoundingClientRect();
 				cropbox = [
@@ -127,12 +133,7 @@
 			};
 
 			cropArea.onmouseup = (e) => {
-				// NEAD ACTION !!
-
-				cropbox = null;
-				cropAreaBounds = null;
-				statusElem.textContent = "Cropped !";
-				sizeElem.textContent = "";
+                endCropBox()
 			};
 
 			cropArea.onmousemove = (e) => {
@@ -143,9 +144,7 @@
 				cropbox[2] = e.clientX - cropAreaBounds.left;
 				cropbox[3] = e.clientY - cropAreaBounds.top;
 
-				sizeElem.textContent = `${Math.abs(Math.round(cropbox[2]))}x${Math.abs(
-					Math.round(cropbox[3])
-				)}`;
+				sizeElem.textContent = `${Math.abs(Math.round(cropbox[2]))}x${Math.abs(Math.round(cropbox[3]))}`;
 
 				updateCropBox(cropbox);
 			};
