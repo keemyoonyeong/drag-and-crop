@@ -130,6 +130,48 @@ section {
     pointer-events: none;
 }
 
-#cropbox-container#cropbox-path {
-    
+
+
+a {
+    text-decoration: none;
+    text-decoration-color: white;
+    color: white;
+    font-weight: bold;
+} 
+a:hover {
+    text-decoration: underline;
+}
+
+button:active {
+    transform: scale(1.05);
+    transition: 0.5s ;
+}
+
+.row-space {
+    display: flex; 
+    gap: 16px;
+}
+.howto {
+    position: fixed;
+    left: 12px; bottom: 12px;
+    width: 40px; height: 40px;
+    border-radius: 52px;
+    background: #000;
+    opacity: 75%;
+    color: white;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-family: 'Bungee Outline';
+    font-size: 18pt;
+    line-height: 0.9;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+.howto:hover {
+    left: 12px; bottom: 12px;
+    width: 52px; height: 52px;
+    opacity: 100%;
+    transition: all 0.2s;
 }

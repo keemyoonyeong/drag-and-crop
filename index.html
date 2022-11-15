@@ -1,197 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">   
-    
-    <!-- 아라빅: Changa -->
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aubrey&family=Bungee+Hairline&family=Bungee+Outline&display=swap" rel="stylesheet">
-    <style>
-        a {
-            text-decoration: none;
-            text-decoration-color: white;
-            color: white;
-            font-weight: bold;
-        } 
-        a:hover {
-            text-decoration: underline;
-        }
+		<!-- 아라빅: Changa -->
 
-        button:active {
-            transform: scale(1.05);
-            transition: 0.5s ;
-        }
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Aubrey&family=Bungee+Hairline&family=Bungee+Outline&display=swap"
+			rel="stylesheet"
+		/>
+		<style></style>
+		<title>✂️ Crop Image</title>
+	</head>
+	<body>
+		<div class="hover-area top">
+			<div class="content">
+				<div class="row-space">
+					<a href="https://github.com/keemyoonyeong" target="_blank"
+						><span> My Github </span></a
+					>
+					<a href="/"><span> RESET </span></a>
+				</div>
+				<div class="fix-right">X</div>
+			</div>
+		</div>
 
-        .row-space {
-            display: flex; 
-            gap: 16px;
-        }
-        .howto {
-            position: fixed;
-            left: 12px; bottom: 12px;
-            width: 40px; height: 40px;
-            border-radius: 52px;
-            background: #000;
-            opacity: 75%;
-            color: white;
-            display: flex;
-            justify-content: left;
-            align-items: center;
-            font-family: 'Bungee Outline';
-            font-size: 18pt;
-            line-height: 0.9;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .howto:hover {
-            left: 12px; bottom: 12px;
-            width: 52px; height: 52px;
-            opacity: 100%;
-            transition: all 0.2s;
-        }
-    </style>
-    <title>✂️ Crop Image</title>
-</head>
-<body>
-    <div class="hover-area top">
-        <div class="content">
-            <div class="row-space">
-                <a href="https://github.com/keemyoonyeong" target="_blank"><span >
-                    My Github
-                </span></a>
-                <a href="/"><span >
-                    RESET
-                </span></a>
-            </div>
-            <div class="fix-right">
-                X
-            </div>
-        </div>
-    </div>
+		<header>
+			<div class="typo-title">
+				Crop the
+				<span style="white-space: nowrap"
+					>[ &nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp; ]&nbsp;</span
+				>
+			</div>
+		</header>
 
-    <header>
-        <div class="typo-title"> 
-            Crop the <span style="white-space: nowrap;">[ &nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp; ]&nbsp;</span>
-        </div>
-    </header>
+		<div class="divider"></div>
 
-    <div class="divider"></div>
+		<section>
+			<div id="size-box"></div>
+			<!-- size info -->
 
-    <section>
-
-        <div id="size-box"> </div> <!-- size info -->
-
-        <!-- Upload Button -->
-        <!-- <button>
+			<!-- Upload Button -->
+			<!-- <button>
             Upload File
         </button> -->
 
+			<!-- Crop Area -->
+			<div id="crop-area">
+				<svg id="cropbox-container">
+					<path
+						id="cropbox-path"
+						fillRule="evenodd"
+						clipRule="evenodd"
+						fill="#00000080"
+					/>
+				</svg>
+			</div>
+		</section>
 
+		<div class="divider"></div>
 
-        <!-- Crop Area -->
-        <div id="crop-area">
-            <svg id="cropbox-container" >
-                <path id="cropbox-path" 
-                d="M0 0 L0 200 L200 200 L200 0 Z M10 10 L190 10 L190 190 L10 190 Z" 
-                />
-            </svg>
-        </div>
-    </section>
+		<footer>
+			<div id="status" class="typo-subtitle">Start?</div>
+		</footer>
 
-    <div class="divider"></div>
+		<!-- Help Message Button -->
+		<div class="howto">
+			????<br />
+			????<br />
+			????<br />
+		</div>
 
-    <footer>
-        <div id="status" class="typo-subtitle"> 
-            Start?
-        </div>
+		<script>
+			let uploadedFile = false;
+			const targetFile = "";
+			let cropbox = null;
+			let cropAreaBounds = null;
 
-    </footer>
+			const cropArea = document.getElementById("crop-area");
+			const statusElem = document.getElementById("status");
+			const sizeElem = document.getElementById("size-box");
+			const cropBoxElem = document.getElementById("cropbox-container");
+			const cropPathElem = document.getElementById("cropbox-path");
 
+			cropArea.onmouseover = (e) => {
+				document.body.style.cursor = "crosshair";
+			};
 
+			cropArea.onmouseleave = (e) => {
+				document.body.style.cursor = "unset";
+			};
 
+			const updateCropBox = (cropbox) => {
+				if (!cropbox) {
+					cropBoxElem.style.visibility = "hidden";
+					return;
+				}
 
-    <!-- Help Message Button -->
-    <div class="howto">
-        ????<br>
-        ????<br>
-        ????<br>
-    </div>
-    
-    <script>
-        let uploadedFile = false 
-        const targetFile = ""
-        let cropbox = null
-        let cropAreaBounds = null
-
-        const cropArea = document.getElementById('crop-area')
-        const statusElem = document.getElementById('status')
-        const sizeElem = document.getElementById('size-box')
-        const cropBoxElem = document.getElementById('cropbox-container')
-        const cropPathElem = document.getElementById('cropbox-path')
-
-        cropArea.onmouseover = (e) => {
-            document.body.style.cursor = 'crosshair';
-        }
-
-        cropArea.onmouseleave = (e) => {
-            document.body.style.cursor = 'unset';
-        }
-
-        const updateCropBox = (cropbox) => {
-            if (!cropbox) {
-                cropBoxElem.style.visibility = 'hidden'
-                return
-            }
-            
-            cropBoxElem.style.visibility = 'visible'
-            cropPathElem.d = `
-            M0 0 L0 ${cropAreaBounds.height} L${cropAreaBounds.width} ${cropAreaBounds.height} L${cropAreaBounds.width} 0 Z 
-            
+				console.log(cropbox);
+				cropBoxElem.style.visibility = "visible";
+				cropPathElem.setAttribute(
+					"d",
+					`
+                M0 0 L0 ${cropAreaBounds.height} L${cropAreaBounds.width} ${cropAreaBounds.height} L${cropAreaBounds.width} 0 Z 
+                M${cropbox[0]} ${cropbox[1]} L${cropbox[2]} ${cropbox[1]} L${cropbox[2]} ${cropbox[3]} L${cropbox[0]} ${cropbox[3]} Z    
             `
-            console.log(cropPathElem.d)
-            // M10 10 L190 10 L190 190 L10 190 Z
-        }
+				);
+			};
 
-        cropArea.onmousedown = (e) => {
-            cropAreaBounds = cropArea.getBoundingClientRect()
-            cropbox = [
-                e.clientX,
-                e.clientY,
-                0,
-                0,
-            ]
+			cropArea.onmousedown = (e) => {
+				cropAreaBounds = cropArea.getBoundingClientRect();
+				cropbox = [
+					e.clientX - cropAreaBounds.left,
+					e.clientY - cropAreaBounds.top,
+					0,
+					0,
+				];
 
-            statusElem.textContent = 'Cropping...'
-            sizeElem.textContent = ''
-        }
+				statusElem.textContent = "Cropping...";
+				sizeElem.textContent = "";
+			};
 
-        cropArea.onmouseup = (e) => {
-            // NEAD ACTION !!
+			cropArea.onmouseup = (e) => {
+				// NEAD ACTION !!
 
-            cropbox = null 
-            cropAreaBounds = null
-            statusElem.textContent = 'Cropped !'
-            sizeElem.textContent = ''
-        }
+				cropbox = null;
+				cropAreaBounds = null;
+				statusElem.textContent = "Cropped !";
+				sizeElem.textContent = "";
+			};
 
-        cropArea.onmousemove = (e) => {
-            if (!cropbox || !cropAreaBounds) { return }
-            
-            cropbox[2] = e.clientX - cropbox[0]
-            cropbox[3] = e.clientY - cropbox[1]
-            
-            sizeElem.textContent = ` ${Math.abs(Math.round(cropbox[2]))}x${Math.abs(Math.round(cropbox[3]))} `
+			cropArea.onmousemove = (e) => {
+				if (!cropbox || !cropAreaBounds) {
+					return;
+				}
 
-            updateCropBox(cropbox)
-        }
+				cropbox[2] = e.clientX - cropAreaBounds.left;
+				cropbox[3] = e.clientY - cropAreaBounds.top;
 
-        
-    </script>
+				sizeElem.textContent = `${Math.abs(Math.round(cropbox[2]))}x${Math.abs(
+					Math.round(cropbox[3])
+				)}`;
 
-</body>
+				updateCropBox(cropbox);
+			};
+		</script>
+	</body>
 </html>
